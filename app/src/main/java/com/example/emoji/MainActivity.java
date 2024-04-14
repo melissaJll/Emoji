@@ -1,21 +1,53 @@
 package com.example.emoji;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class MainActivity extends AppCompatActivity {
+    private BottomNavigationView bottomNavigationView;
+
     Button btn_nova_tarefa;
+
+    //ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //menu
+        //binding = ActivityMainBinding.inflate(getLayoutInflater());
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.navigation_home:
+                        startActivity(new Intent(MainActivity.this, MainActivity.class));
+                        return true;
+                    case R.id.navigation_tasks:
+                        startActivity(new Intent(MainActivity.this, AdicionarTarefaActivity.class));
+                        return true;
+                    case R.id.navigation_progresso:
+                        startActivity(new Intent(MainActivity.this, ProgressoActivity.class));
+                        return true;
+                }
+                return false;
+            }
+        });
+
+
+
+
         btn_nova_tarefa = findViewById(R.id.btn_nova_tarefa);
 
         btn_nova_tarefa.setOnClickListener(new View.OnClickListener() {
