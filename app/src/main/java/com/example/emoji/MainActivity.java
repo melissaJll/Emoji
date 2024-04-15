@@ -9,13 +9,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
 
     public Button btn_nova_tarefa;
+    public TextView dataHoje;
 
     //ActivityMainBinding binding;
 
@@ -23,6 +30,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Data de Hoje
+        dataHoje = findViewById(R.id.dataHoje);
+        // método para formatar
+        //SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy", new Locale("pt", "BR"));
+        //retorna uma instância de Calendar que representa a data e hora atuais
+        String dataAtualText = sdf.format(Calendar.getInstance().getTime());
+        dataHoje.setText(dataAtualText);
+
+
         //menu
         //binding = ActivityMainBinding.inflate(getLayoutInflater());
         bottomNavigationView = findViewById(R.id.bottom_navigation);
