@@ -34,12 +34,13 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.navigation_home:
                         startActivity(new Intent(MainActivity.this, MainActivity.class));
                         return true;
-                    case R.id.navigation_tasks:
+                    case R.id.navigation_adicionarTarefa:
                         startActivity(new Intent(MainActivity.this, AdicionarTarefaActivity.class));
                         return true;
                     case R.id.navigation_progresso:
                         startActivity(new Intent(MainActivity.this, ProgressoActivity.class));
                         return true;
+
                 }
                 return false;
             }
