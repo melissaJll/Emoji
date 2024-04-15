@@ -31,7 +31,7 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
 
     //Calendario
     private EditText nomeTarefa;
-    private Button selectDateButton;
+    private Button selectDateButton, adicionarTarefa;
     private Calendar calendar;
 
     //horario
@@ -130,15 +130,55 @@ public class AdicionarTarefaActivity extends AppCompatActivity {
 
 
 
-        Button adicionarTarefaButton = findViewById(R.id.adicionaTarefa);
+        // Banco de dados e inserir     SQLlite
+        // findViewById(R.id.adicionaTarefa) chamar no onClick=adicionarTarefa
+
+        Button adicionarTarefa = findViewById(R.id.adicionaTarefa);
+        adicionarTarefa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    // Abre ou cria o banco de dados
+                    SQLiteDatabase bancoDados = openOrCreateDatabase("CheckList", MODE_PRIVATE, null);
+                    bancoDados.execSQL("CREATE TABLE IF NOT EXISTS minhasTarefas (id INTEGER PRIMARY KEY AUTOINCREMENT, tarefa VARCHAR, data VARCHAR, horario VARCHAR)");
+
+                    // Obtém a tarefa digitada
+                    String novaTarefa = nomeTarefa.getText().toString();
+
+                    // Obtém a data selecionada
+                    String dataTarefa = calendarioTextView.getText().toString();
+
+                    // Obtém o horário selecionado
+                    String horarioTarefa = horarioTextView.getText().toString();
+
+                    // Insere a nova tarefa com a data e horário fornecidos
+                    bancoDados.execSQL("INSERT INTO minhasTarefas (tarefa, data, horario) VALUES('" + novaTarefa + "', '" + dataTarefa + "', '" + horarioTarefa + "')");
+
+                    // Exibe as tarefas no Log
+                    Cursor cursor = bancoDados.rawQuery("SELECT * FROM minhasTarefas", null);
+                    int indiceColunaID = cursor.getColumnIndex("id");
+                    int indiceColunaTarefa = cursor.getColumnIndex("tarefa");
+                    int indiceColunaData = cursor.getColumnIndex("data");
+                    int indiceColunaHorario = cursor.getColumnIndex("horario");
+
+                    cursor.moveToFirst();
+                    while (!cursor.isAfterLast()) {
+                        Log.i("Logx", "ID: " + cursor.getString(indiceColunaID) + " - Tarefa: " + cursor.getString(indiceColunaTarefa) + " - Data: " + cursor.getString(indiceColunaData) + " - Horário: " + cursor.getString(indiceColunaHorario));
+                        cursor.moveToNext();
+                    }
+
+                    cursor.close();
+
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
 
 
     }
 
 
-
-    // Banco de dados e inserir
-    //  findViewById(R.id.adicionaTarefa) chamar no onClick=adicionarTarefa
-   
 
 }
